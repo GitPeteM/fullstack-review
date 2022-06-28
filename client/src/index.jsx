@@ -12,10 +12,12 @@ class App extends React.Component {
       error: null,
       repos: []
     }
+    this.top25RepoList = this.top25RepoList.bind(this);
 
   }
 
   // componentDidMount() {
+    //Use this for the get.
   //   //axios
   //   //localhost to your own server, with port/repos
   //   // axios getting start
@@ -40,16 +42,33 @@ class App extends React.Component {
     console.log(`${term} was searched`);
     // TODO
     // make a post request with axios.
-    axios.post('https://localhost:1128/repos', {
+    axios.post('/repos', {
       term
     })
-    .then(function(response) {
-      console.log(response);
+    .then((statusCodeResponse) => {
+      // initiate get method here. call function
+      this.top25RepoList();
     })
-    .catch(function(error) {
+    .catch((error) => {
       console.log(error);
     });
   }
+
+  top25RepoList () {
+    axios.get('/repos')
+    .then(repos => {
+      // console.log(repos.data)
+      this.setState({
+        repos: repos.data
+      })
+      console.log(this.state)
+    })
+    .catch(error => {
+      this.setState({error});
+    })
+  }
+
+
 
   render () {
     const { error, repos} = this.state;
