@@ -16,27 +16,20 @@ class App extends React.Component {
 
   }
 
-  // componentDidMount() {
-    //Use this for the get.
-  //   //axios
-  //   //localhost to your own server, with port/repos
-  //   // axios getting start
+  componentDidMount() {
+    // Need to render something when the page mounts.
+    //axios
+    axios.get('/repos')
+      .then(repos => {
+        this.setState({
+          repos: repos.data
+        })
+      })
+      .catch(error => {
+        this.setState({error});
+      })
 
-  //   fetch(`https://api.github.com/users/"${term}/repos`)
-  //     .then(res => res.json())
-  //     .then(
-  //       (result) => {
-  //         this.setState({
-  //           repos: result
-  //         });
-  //       },
-  //       (error) => {
-  //         this.setState({
-  //           error
-  //         });
-  //       }
-  //     )
-  // }
+  }
 
   search (term) {
     console.log(`${term} was searched`);
@@ -50,8 +43,11 @@ class App extends React.Component {
       this.top25RepoList();
     })
     .catch((error) => {
-      console.log(error);
-    });
+      this.setState({error});
+    })
+    // .finally(() =>  {
+    //   this.top25RepoList();
+    // })
   }
 
   top25RepoList () {
